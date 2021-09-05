@@ -4,7 +4,7 @@ const axios = require('axios');
 const { v4: UUIDV4 } = require('uuid');
 
 
-const getApiInfo = async () => {
+const getCountry = async () => {
     const apiUrl = await axios.get('https://restcountries.eu/rest/v2/all')
 
     const apiInfo = await apiUrl.data.map(elem => {
@@ -19,16 +19,19 @@ const getApiInfo = async () => {
             capital: elem.capital,
         }
     })
-    return apiInfo;
+    let flag = await Country.findAll();
+    if (!flag.length) await Country.bulkCreate(apiInfo);
+    return getCountry
 }
 
 const getDbInfo = async () => {
-    try{
-        const countryTotal= await getApiInfo();
+    try {
+        const countryTotal = await getApiInfo();
+        console.log(countryTotal)
         let flag = await Country.findAll();
-        if(!flag.length) await Country.bulkCreate(countryTotal);
+        if (!flag.length) await Country.bulkCreate(countryTotal);
         console.log(Country)
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
@@ -41,9 +44,9 @@ const getAllCountries = async () => {
     return infoTotal;
 }
 
-const getCountry = async (req, res) => {
+const getName = async (req, res) => {
     const name = req.query.name;
-    let countryTotal = await getAllCountries();
+    let countryTotal = await getApiInfo();
     if (name) {
         let countryName = await countryTotal.filter(elem => elem.name.toLowerCase().includes(name.toLowerCase()))
         countryName.length ?
@@ -56,16 +59,26 @@ const getCountry = async (req, res) => {
 
 const getCountryById = async (req, res) => {
     const { id } = req.params
-    const countriesTotal = await getAllCountries();
-    if (id) {
-        const countryId = await countriesTotal.filter(elem => elem.id.toLowerCase().includes(id.toLowerCase()));
-        countryId.length ?
-            res.status(200).send(countryId) :
-            res.status(404).send('No se encontro el id');
+    try {
+        let country = await Country.findOne({
+            where: {
+                id: id
+            },
+            include :[
+                {
+                    model: Activy,
+                    attributes: ['name', 'id'],
+                },
+            ]
+        });
+        return res.send(country);
+    } catch (err) {
+        console.log(err)
     }
 }
 
 module.exports = {
     getCountry,
+    getName,
     getCountryById
 }

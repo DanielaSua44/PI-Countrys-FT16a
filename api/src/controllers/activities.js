@@ -1,24 +1,38 @@
 const { Country, Activy } = require('../db');
-const { Op } = require("sequelize");
+const { Op, UUID } = require("sequelize");
+const { v4: UUIDV4 } = require('uuid');
 const axios = require('axios');
 
-const postActibity = async (res,req) => {
-    const activy = req.body
-    try{
-       let [acty , created] = await Activy.findOrCreate({
-           where:{
-               name:activy.name,
-               difficulty:activy.difficulty,
-               duration:activy.duration,
-               season:activy.season
-           }
-       });
-       console.log(created);
-       await acty.setCountries(activy.charId)//id puede ser un arreglo para que me relacione con los paises
-       return res.json(acty)
-    }catch(err){
-        console.log(err)
-    }
-}
+const activities = async (res, req, next) => {
+    const { name, countryId, season, difficulty, duration } = req.body;
+    try {
+        if (name && difficulty && duration && season) {
+            const newActivity = await Activy.create({
+                id:UUID(),
+                name,
+                difficulty,
+                duration,
+                season,
+            });
+            try {
+                let country = await Country.findAll({
+                    where: {
+                        id: countryId,
+                    }
+                })
 
-module.exports= postActibity;
+                await newActivity.addCountries(country)
+                return res.send('actividad creada')
+            }catch(err){
+                console.log(err)
+            }
+        }else{
+            return res.send('Falta informacion')
+        }
+    } catch (error) {
+            next(error)
+        }
+    }
+
+
+module.exports = activities;
