@@ -1,7 +1,7 @@
-import react, { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { allCountries, unmountAllCountries } from '../redux/actons';
+import { allCountries, unmountAllCountries } from '../redux/actions';
 import CountryCard from './CountryCard'
 import Paginado from './nav/Paginado';
 
@@ -10,7 +10,7 @@ const Countries = () => {
     const dispatch = useDispatch();
     const countries = useSelector(state => state.countries);
     const name = query.get('name');
-    const from = parseInt(query.get('from'))
+    const from = query.get('from');
 
     useEffect(() => {
         name ? dispatch(allCountries(name)) : dispatch(allCountries());
@@ -19,7 +19,7 @@ const Countries = () => {
         }
     }, [dispatch, name]);
 
-    return (
+    const countryComponent= () =>(
         <div style={{display:'flex',justifyContent:'space-around'}}>
             {
                 countries &&(
@@ -32,7 +32,8 @@ const Countries = () => {
                 )
             }
         </div>
-    )
+    );
+    return countries.length ? countryComponent() : <div>Cargando...</div>
 }
 
 export default Countries;

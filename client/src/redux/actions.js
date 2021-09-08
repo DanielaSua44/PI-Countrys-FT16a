@@ -4,6 +4,7 @@ export const GET_ALL_COUNTRIES = "GET_ALL_COUNTRIES"
 export const GET_COUNTRY = "GET_COUNTRY"
 export const GET_CREATE = "GET_CREATE"
 export const UNMOUNT_ALL_COUNTRIES = "UNMOUNT_ALL_COUNTRIES"
+export const ORDER_FILTER ="ORDER_FILTER"
 
 export const allCountries = (name) => dispatch => {
     try {
@@ -30,7 +31,7 @@ export const allCountry = id => dispatch => {
 
 export const create = value => dispatch => {
     try {
-        return axios.post('/activities', { ...value })
+        return axios.post('/activities',{ ...value })
             .then(res => dispatch({ type: GET_CREATE, payload: res.data }))
     } catch (err) {
         console.log(err)
@@ -38,3 +39,13 @@ export const create = value => dispatch => {
 };
 
 export const unmountAllCountries = () => ({ type: UNMOUNT_ALL_COUNTRIES })
+
+export const orderFilter = values => dispatch => {
+    const {name,order,continent}=values
+    return axios.get(`/countries?name=${name}&&continent=${continent}`)
+    .then(res => {
+        if(values.order) return dispatch({type:ORDER_FILTER, payload:res.data,order:order});
+        dispatch({type:GET_ALL_COUNTRIES,payload:res.data})
+    })
+    .catch(err => console.log(err))
+}

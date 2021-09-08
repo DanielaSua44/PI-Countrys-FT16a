@@ -1,9 +1,9 @@
-import react, { useState } from 'react';
-import { useHistory } from 'react-router';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 const SearchBar = () => {
     const history=useHistory();
-    const [name,setName] =useState();
+    const [name,setName] =useState('');
 
     const handleOnClick=() => {
         setName('');
@@ -12,7 +12,7 @@ const SearchBar = () => {
     return(
         <div>
             <input onChange={({target:{value}}) => setName(value)} value={name} type='text' placeholder="Search..."/>
-            <button type='submit' onClick={handleOnClick}>Search</button>
+            <button type='submit' onClick={(e) => handleOnClick(e)}>Search</button>
         </div>
     )
 };

@@ -1,5 +1,5 @@
-import react from 'react';
-import { useHistory, useLocation, useParams } from 'react-router';
+import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Paginado =({countries}) => {
     const query = new URLSearchParams(useLocation().search.slice(1));

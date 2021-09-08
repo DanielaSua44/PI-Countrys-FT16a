@@ -1,4 +1,4 @@
-import { GET_ALL_COUNTRIES, GET_COUNTRY, GET_CREATE, UNMOUNT_ALL_COUNTRIES } from "./actons";
+import { GET_ALL_COUNTRIES, GET_COUNTRY, GET_CREATE, ORDER_FILTER, UNMOUNT_ALL_COUNTRIES } from "./actions";
 
 const inicialState={
     countries:[],
@@ -22,6 +22,17 @@ const rootReducer = (state = inicialState,action) => {
             return{
                 ...state,
                 activitys:action.payload
+            }
+        case ORDER_FILTER:
+            const {order,payload}=action
+            return{
+                ...state,
+                countries:payload.slice().sort((a,b) =>{
+                    if(order === 'asc'){
+                        return a.name.localeCompare(b.name);
+                    }
+                    return b.name.localeCompare(a.name)
+                })
             }
         case UNMOUNT_ALL_COUNTRIES:
             return{

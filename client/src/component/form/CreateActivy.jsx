@@ -1,6 +1,6 @@
 import react, { useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { allCountries,create } from '../../redux/actons';
+import { allCountries,create } from '../../redux/actions';
 
 const CreateActivy =() => {
     const dispatch= useDispatch()
@@ -24,7 +24,8 @@ const CreateActivy =() => {
 
     const handleOnSumit = e => {
         e.preventDefault();
-        dispatch(create())
+        console.log("values:",values)
+        dispatch(create(values))
         setValues({
             name:'',
             difficulty:'',
@@ -66,19 +67,17 @@ const CreateActivy =() => {
             <label><input type='checkbox' name='Fall' value='Fall' onChange={handleCheck} />Fall</label>
             <label><input type='checkbox' name='Spring' value='Spring' onChange={handleCheck} />Spring</label>
             <label htmlFor=''>countries</label>
-            <input onChange={handleOnChange} type='text'/>
-                <select name='' onChange={e => handleSelect(e)}>
+                <select name=''value={values.countries} onChange={e => handleSelect(e)}>
+                    <option value=''>-</option>
                     {
-                        countries && countries.map(i => (
-                            <option value={JSON.stringify(i.id)}>{i.name}</option>
+                        countries && countries.map(state => (
+                            <option key={state.id} value={state.id}>{state.name}</option>
                         ))
                     }
-                    <ul>
-                        <li>{values.countries.map(i => i + ", ")}</li>
-                    </ul>
                 </select>
                 <button type='submit'>Crear Actividad</button>
         </form>
+        
     )
 }
 
