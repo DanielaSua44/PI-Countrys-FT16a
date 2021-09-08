@@ -19,9 +19,26 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
+const axios = require('axios');
+const {Country} = require('./src/db.js')
 
 // Syncing all the models at once.
-conn.sync({ force: false }).then(() => {
+conn.sync ({ force:true}).then(async () => {
+  const apiUrl = await axios.get('https://restcountries.eu/rest/v2/all')
+
+  const apiInfo = await apiUrl.data.map(elem => {
+      return {
+          name: elem.name,
+          id: elem.alpha3Code,
+          flag: elem.flag,
+          continent: elem.region,
+          subregion: elem.subregion,
+          area: elem.area,
+          population: elem.population,
+          capital: elem.capital,
+      }
+  })
+  await Country.bulkCreate(apiInfo);
   console.log('Conectado a la BD')
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console

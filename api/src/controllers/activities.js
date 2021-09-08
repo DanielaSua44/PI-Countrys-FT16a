@@ -1,38 +1,49 @@
-const { Country, Activy } = require('../db');
-const { Op, UUID } = require("sequelize");
-const { v4: UUIDV4 } = require('uuid');
-const axios = require('axios');
+const { Country, Activy, country_activy } = require('../db');
+const { Op } = require("sequelize");
 
-const activities = async (res, req, next) => {
-    const { name, countryId, season, difficulty, duration } = req.body;
+const activities = async (name,difficulty,duration,season,countryId) => {
     try {
-        if (name && difficulty && duration && season) {
-            const newActivity = await Activy.create({
-                id:UUID(),
-                name,
-                difficulty,
-                duration,
-                season,
-            });
-            try {
-                let country = await Country.findAll({
-                    where: {
-                        id: countryId,
-                    }
-                })
+        const newActivy = await Activy.create({
+            name,
+            difficulty,
+            duration,
+            season
+        })
+        await newActivity.addCountries(countryId);
+        return res.json(newActivy);
+    }catch(error){
+        console.log(error)
+    } 
+};
 
-                await newActivity.addCountries(country)
-                return res.send('actividad creada')
-            }catch(err){
-                console.log(err)
-            }
-        }else{
-            return res.send('Falta informacion')
+const getActivy = async (req, res, next) => {
+    const name = req.query;
+    if (name) {
+        try {
+            let char = await Activy.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: '%' + name + '%'
+                    }
+                }
+            });
+            return res.json(char);
+        } catch (err) {
+            console.log(err);
         }
-    } catch (error) {
-            next(error)
+    } else {
+        try {
+            let char = await Activy.findAll({
+                include: { model: Country }
+            });
+            return res.json(char);
+        } catch (err) {
+            console.log(err)
         }
     }
+};
 
-
-module.exports = activities;
+module.exports = {
+    activities,
+    getActivy
+}
