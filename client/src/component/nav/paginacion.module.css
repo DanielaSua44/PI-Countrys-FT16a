@@ -1,0 +1,41 @@
+.conteiner{
+    display:table-cell;
+    margin: 10px;
+}
+
+.pagination{
+    display:flex;
+    padding: 0,5;
+    margin: 0;
+    text-align: center;
+  margin: auto;
+  color: blue;
+  text-decoration: none;
+  height: 100%;
+  border-bottom: 4px solid transparent;
+}
+
+.pageItem{
+    list-style: none;
+    display: inline;
+    color: rgb(92, 8, 81);
+    padding: 4px 6px;
+    text-decoration: none;
+}
+
+.pageLink{
+    box-shadow: 0px 1px 0px 0px #8578170a;
+    background: linear-gradient(to bottom, #e0c41209 5%, #b3a02309 100%);
+    background-color: #8f7f1502;
+    border: 1px solid #998d420a;
+    display: inline-block;
+    cursor: pointer;
+    color: #1ed418;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 6px;
+    text-decoration: none;
+    margin: 1px;
+    text-shadow: 0px 1px 0px #867a1a;
+}

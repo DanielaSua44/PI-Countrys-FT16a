@@ -1,0 +1,12 @@
+.detail {
+    display: flex;
+    justify-content: center;
+    width: 50;
+    height: 80%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: rgba(38, 180, 20, 0.863);
+}
+

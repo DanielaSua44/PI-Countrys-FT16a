@@ -1,35 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { create } from '../../redux/actions';
+import { allCountry } from '../../redux/actions';
 import { Link } from 'react-router-dom'
+import './details.css'
 
 function Details(props) {
-    const details = useSelector(state => state.country);
+    console.log(props)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(create(props.match.params.id))
+        dispatch(allCountry(props.match.params.id))
     }, [dispatch]);
+
+    const details = useSelector(state => state.country);
 
     return (
         <div className="detail">
-            {details > 0 ?
+            {
+                details !== null?
                 <div >
-                    <h2 className="nameC">{details[0].name}</h2>
-                    <div className="allDetails">
-                        <img className="imgDetails" src={details[0].flag} alt="Not found"></img>
-                        <h5>{details[0].continent}</h5>
-                        <h3>Continent</h3>
-                        <h4>{details[0].area}</h4>
-                        <h4>{details[0].population}</h4>
-                        <h4>{details[0].capital}</h4>
-                        <h4>{details[0].subregion}</h4>
-                        <h4>Activities:
-                            {details.activities ? details[0].activities + '' : details[0].activities.map(i => (
-                                <h5>{i}</h5>
-                            ))}</h4>
+                    <h2 className="nameC">Country:{details.name}</h2>
+                    <img className="imgDetails" src={details.flag} alt="Not found"></img>
+                    <h5>Continent:{details.continent}</h5>
+                    <h3>Continent</h3>
+                    <h4>Total de Area en Km:{details.area}</h4>
+                    <h4>Total poblacion:{details.population}</h4>
+                    <h4>Capital:{details.capital}</h4>
+                    <h4>Subregion:{details.subregion}</h4>
+                    <h4>Activities:</h4>
+                    <div>
+                        {
+                            details.activies?.map((el,index) =>{
+                               return  <h4 key={index}>{el.name} ,difficulty:{el.difficulty} ,duration:{el.duration} ,season:{el.season}</h4>
+                            })
+                        }
                     </div>
-                </div> : <p>loading...</p>
+
+                </div>: <p>...Loading</p>
             }
             <Link to='/main'>
                 <button>volver</button>

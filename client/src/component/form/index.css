@@ -1,0 +1,52 @@
+body{
+    background-color: rgb(3, 19, 65);
+    align-items: center;
+}
+
+.title{
+    text-align: center;
+    color: rgb(15, 185, 29);
+}
+.formulario {
+    width :500px;
+    max-width: 100%;
+    margin: auto;
+    margin-top: 30px;
+    padding: 20px;
+    box-shadow: 0 0 26px 1px rgb(0,0,0,0.3);
+    position: relative;
+}
+.formulario_input,submit{
+    display: block;
+    width: 100%;
+    font-size: 1.3em;
+}
+
+.formulario_titulo{
+    text-align: center;
+    margin-top: 0%;
+    color: rgb(12, 184, 35);
+}
+
+.formulario_input{
+    padding: 20px;
+    border: 1px solid rgb(12, 184, 35);
+    margin-bottom: 40px;
+}
+.submit{
+    background: rgb(13, 184, 13);
+    color: rgb(29, 11, 107);
+    padding: 10px 20px;
+    cursor: pointer;
+    border: rgb(10, 10, 88);
+    border-radius: 3px;
+}
+
+.check{
+    color: cornsilk;
+    text-decoration-color: darkgreen;
+}
+.requerid{
+    color: red;
+    font-size: 10px;
+}

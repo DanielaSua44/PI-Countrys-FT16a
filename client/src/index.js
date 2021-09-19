@@ -11,11 +11,11 @@ import { BrowserRouter } from 'react-router-dom';
 axios.defaults.baseURL = 'http://localhost:3001/api/';
 
 ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

@@ -1,0 +1,5 @@
+.container{
+    display: flex;
+    justify-content: space-around;
+    color: rgb(17, 211, 27);
+}
